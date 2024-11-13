@@ -64,7 +64,7 @@ const TodoPage = () => {
     const fetchApi = async() => {
         try {
             const response =
-                await fetch(`https://jsonplaceholder.typicode.com/todos2?_limit=${limit}&_start=${offset}`);
+                await fetch(`https://jsonplaceholder.typicode.com/todos?_limit=${limit}&_start=${offset}`);
             return await response.json();
         } catch(e) {
             console.log(e);
