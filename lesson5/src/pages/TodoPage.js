@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import TodoList from '../components/todoList/TodoList';
 import Button from '../components/button/Button';
 import Modal from '../components/modal/Modal';
+import Pagination from '../components/pagination/Pagination';
 
 
 const TodoPage = () => {
     const [ show, setShow ] = useState(false);
+    const [ offset, setOffset ] = useState(0);
+    console.log(offset,'offset');
     const [ show2, setShow2 ] = useState(false);
     const [ name, setName ] = useState('');
     const [ inputValue, setInputValue ] = useState('');
@@ -49,27 +52,57 @@ const TodoPage = () => {
         if (name === 'show2') setShow2(prevState => !prevState);
     };
 
-    useEffect(() => {
-        console.log('useEffect');
-    }, [ show ]);
-
-    useEffect(() => {
-        const myLocalStorage = JSON.parse(localStorage.getItem('todo'));
-        if (myLocalStorage === null) {
-            return localStorage.setItem('todo', JSON.stringify(todoList));
+    const [limit, setLimit] = useState(4)
+    console.log(limit,'limit ');
+    const page = (offset / Number(limit))+1
+    const handleNext = () => {
+        setOffset(prevState => prevState+Number(limit))
+    }
+    const handlePrev = () => {
+        setOffset(prevState => prevState-Number(limit))
+    }
+    const fetchApi = async() => {
+        try {
+            const response =
+                await fetch(`https://jsonplaceholder.typicode.com/todos2?_limit=${limit}&_start=${offset}`);
+            return await response.json();
+        } catch(e) {
+            console.log(e);
+        } finally {
+            console.log('finally');
         }
-        if (myLocalStorage !== 0) {
-            setTodoList(myLocalStorage);
-        }
-    }, []);
+    };
 
-    useEffect(() => {
-        localStorage.setItem('todo', JSON.stringify(todoList));
-    }, [ todoList ]);
+    useEffect(()=>{
+        fetchApi().then(data=>setTodoList(data))
+    },[offset, limit])
+
+    // useEffect(() => {
+    //     console.log('useEffect');
+    // }, [ show ]);
+    //
+    // useEffect(() => {
+    //     const myLocalStorage = JSON.parse(localStorage.getItem('todo'));
+    //     if (myLocalStorage === null) {
+    //         return localStorage.setItem('todo', JSON.stringify(todoList));
+    //     }
+    //     if (myLocalStorage !== 0) {
+    //         setTodoList(myLocalStorage);
+    //     }
+    // }, []);
+
+    // useEffect(() => {
+    //     localStorage.setItem('todo', JSON.stringify(todoList));
+    // }, [ todoList ]);
+
+
+
 
 
     return (
         <div>
+            <input type="number" onChange={(event)=>setLimit(event.target.value)}/>
+            <Pagination page={page} next={handleNext}  prev={handlePrev}/>
             <TodoList
                 todoList={todoList}
                 handleDone={handleDone}

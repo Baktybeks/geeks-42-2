@@ -13,7 +13,6 @@ const Todo = ({
     isEdit
 }) => {
     const [ inputValue, setInputValue ] = useState(todo.title);
-    console.log(inputValue, 'inputValue');
     return (
         <>
 
