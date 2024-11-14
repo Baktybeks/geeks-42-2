@@ -6,9 +6,7 @@ import User from '../../components/user/User';
 const BASE_URL = 'https://jsonplaceholder.typicode.com/';
 
 export const fetchApi = (API) => {
-    return fetch(`${BASE_URL}/${API}`).then(response => response.json()).then(data => {
-        return data;
-    });
+    return fetch(`${BASE_URL}/${API}`).then(response => response.json())
 };
 
 const UserPage = () => {
@@ -34,7 +32,7 @@ const UserPage = () => {
     }, []);
     return (
         <div>
-            {/*{users.map(user=><div>{user.name}</div>)}*/}
+            {users.map(user=><div>{user.name}</div>)}
             <div className={classes.users}>
                 {users1.map(user =>
                     <User user={user} fetchUserOne={fetchUserOne} userOne={userOne}/>
