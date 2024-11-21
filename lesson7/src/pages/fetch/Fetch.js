@@ -91,7 +91,6 @@ const Fetch = () => {
       {/*        <div>user: {user.password}</div>*/}
       {/*    </div>)*/}
       {/*}*/}
-
       {students.map((student) => (
         <div className={classes.student} key={student.id}>
           <div>id: {student.id}</div>
